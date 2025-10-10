@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Live Logo Editor</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
+<style id="dynamicStyle"></style>
+<style>
+    /* Port of TextMate's Blackboard theme */
+
+.cm-s-vscode.CodeMirror {
+  background: transparent;
+  color: #D4D4D4;
+}
+
+.cm-s-vscode .CodeMirror-gutters {
+  background: transparent;
+  border-right: none;
+  color: #858585;
+}
+
+.cm-s-vscode .CodeMirror-linenumber {
+  color: #858585;
+}
+
+.cm-s-vscode .CodeMirror-cursor {
+  border-left: 1px solid #AEAFAD;
+}
+
+.cm-s-vscode div.CodeMirror-selected {
+  background: #264F78;
+}
+
+.cm-s-vscode .CodeMirror-line::selection,
+.cm-s-vscode .CodeMirror-line > span::selection,
+.cm-s-vscode .CodeMirror-line > span > span::selection {
+  background: #264F78;
+}
+.cm-s-vscode .cm-tag { color: #DCDCAA; } /* selector'lar (örnek: body, h1, .container) */
+.cm-s-vscode .cm-property { color: #9CDCFE; } /* property'ler (örnek: color, background) */
+.cm-s-vscode .cm-atom { color: #CE9178; } /* değerler (örnek: red, 10px) */
+.cm-s-vscode .cm-number { color: #B5CEA8; }
+
+.cm-s-vscode .cm-keyword { color: #569CD6; }
+.cm-s-vscode .cm-operator { color: #D4D4D4; }
+.cm-s-vscode .cm-variable { color: #9CDCFE; }
+.cm-s-vscode .cm-variable-2 { color: #9CDCFE; }
+.cm-s-vscode .cm-variable-3 { color: #4EC9B0; }
+.cm-s-vscode .cm-def { color: #DCDCAA; }
+.cm-s-vscode .cm-string { color: #CE9178; }
+.cm-s-vscode .cm-string-2 { color: #CE9178; }
+.cm-s-vscode .cm-number { color: #B5CEA8; }
+.cm-s-vscode .cm-comment { color: #6A9955; font-style: italic; }
+.cm-s-vscode .cm-tag { color: #569CD6; }
+.cm-s-vscode .cm-attribute { color: #9CDCFE; }
+.cm-s-vscode .cm-meta { color: #9CDCFE; }
+.cm-s-vscode .cm-builtin { color: #C586C0; }
+.cm-s-vscode .cm-type { color: #4EC9B0; }
+.cm-s-vscode .cm-error { background: #F44747; color: #FFFFFF; }
+.cm-s-vscode .CodeMirror-activeline-background { background: rgba(255,255,255,0.05); }
+.cm-s-vscode .CodeMirror-matchingbracket { outline: 1px solid #888; color: white !important; }
+
+body{
+    background-color: #121212;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: white;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    font-size: 15px;
+    color:rgb(100,100,100);}
+.ext{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.export {
+    position: relative;
+    background-color: white;
+    height: 700px;
+    width: 700px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.code {
+    height: 680px;
+    width: 680px;
+    background-color: #1e1e1e; /* panel rengi */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
+}
+#logo{
+    position: absolute;
+}
+.title{
+    padding: 0 0 0 20px;
+}
+/* CodeMirror editörü panel arka planını örtsün */
+.CodeMirror {
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: transparent !important; /* tamamen şeffaf */
+    color: #ffffff; /* panel rengine göre okunaklı */
+    height: 100%;
+}
+
+#htmlContainer, #cssContainer {
+    height: 40%;
+    margin-bottom: 10px;
+    border: 1px solid rgb(100,100,100,0.25);
+    border-radius: 25px;
+    
+}
+
+#saveBtn {
+    margin-top: 10px;
+    padding: 22px;
+    background-color: #1458E1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#saveBtn:hover {
+    background-color: #0f3ebd;
+}
+</style>
+</head>
+<body>
+<div class="ext">
+    <div class="export">
+        <div id="logo">MyLogo</div>
+    </div>
+
+    <section class="code">
+        <span class="title">HTML</span>
+        <div id="htmlContainer"></div>
+        <span class="title">CSS</span>
+        <div id="cssContainer"></div>
+        <button id="saveBtn">Save as PNG</button>
+    </section>
+</div>
+
+<footer >
+    © 2025 
+  <a href="https://github.com/KessBrekker" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: white;">
+    Kessbrekker
+  </a> 
+  Tüm hakları saklıdır.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/css-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/html-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/xml-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closetag.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const logo = document.getElementById('logo');
+const saveBtn = document.getElementById('saveBtn');
+
+// HTML editörü
+const htmlEditor = CodeMirror(document.getElementById('htmlContainer'), {
+    value: '<span class="text">KESS</span>',
+    lineNumbers: true,
+    mode: "html",
+    theme: "vscode",
+    autoCloseTags: true,
+    autoCloseBrackets: true,
+    extraKeys: { "Ctrl-Space": "autocomplete" },
+    hintOptions: { hint: CodeMirror.hint.html }
+});
+
+htmlEditor.on("inputRead", function(cm, change) {
+    if (!cm.state.completionActive) {
+        cm.execCommand("autocomplete");
+    }
+});
+
+// CSS editörü
+const cssEditor = CodeMirror(document.getElementById('cssContainer'), {
+    value: `#logo {
+    width: 700px;
+    height: 700px;
+    background: linear-gradient(90deg, rgb(12,12,12), rgb(60,60,60));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.text{
+  font-size: 230px;
+  letter-spacing:-45px;
+  color:rgb(100,100,100);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-weight: 900;
+}`,
+    lineNumbers: true,
+    mode: "css",
+    theme: "vscode",
+    autoCloseBrackets: true,
+    extraKeys: { "Ctrl-Space": "autocomplete" },
+    hintOptions: { hint: CodeMirror.hint.css }
+});
+
+cssEditor.on("inputRead", function(cm, change) {
+    if (!cm.state.completionActive) {
+        cm.execCommand("autocomplete");
+    }
+});
+
+
+
+function applyHTML() {
+    logo.innerHTML = htmlEditor.getValue();
+}
+
+function applyCSS() {
+    const css = cssEditor.getValue();
+    document.getElementById('dynamicStyle').textContent = css;
+    // Ölçekleme için #logo kurallarını parse et
+    const logoRules = css.match(/#logo\s*\{([^}]*)\}/);
+    if (logoRules) {
+        const declarations = logoRules[1];
+        const widthMatch = declarations.match(/width:\s*(\d+)px/);
+        const heightMatch = declarations.match(/height:\s*(\d+)px/);
+        if (widthMatch && heightMatch) {
+            const w = parseInt(widthMatch[1]);
+            const h = parseInt(heightMatch[1]);
+            const scale = Math.min(700 / w, 700 / h);
+            if (scale < 1) {
+                logo.style.transform = `scale(${scale})`;
+                logo.style.transformOrigin = 'center';
+            } else {
+                logo.style.transform = 'none';
+            }
+        }
+    }
+}
+
+// Live preview: editorler değiştikçe logoya uygula
+htmlEditor.on("change", applyHTML);
+cssEditor.on("change", applyCSS);
+
+// İlk yüklemede uygula
+applyHTML();
+applyCSS();
+
+// PNG kaydet
+saveBtn.addEventListener('click', () => {
+    const currentTransform = logo.style.transform;
+    logo.style.transform = 'none';
+    html2canvas(logo).then(canvas => {
+        logo.style.transform = currentTransform;
+        const link = document.createElement('a');
+        link.download = 'logo.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+});
+</script>
+
+</body>
+</html>
