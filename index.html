@@ -86,7 +86,7 @@ footer{
     align-items: center;
     gap: 50px;
 }
-.exp {
+.export {
     position: relative;
     background-color: white;
     height: 700px;
@@ -106,9 +106,6 @@ footer{
     flex-direction: column;
     padding: 10px;
     justify-content: space-between;
-}
-#logo{
-    position: absolute;
 }
 .title{
     padding: 0 0 0 20px;
@@ -147,7 +144,7 @@ footer{
 </head>
 <body>
 <div class="ext">
-    <div class="exp">
+    <div class="export" id="exp">
     </div>
 
     <section class="code">
@@ -177,7 +174,7 @@ footer{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-const logo = document.getElementById('exp');
+const exp = document.getElementById('exp');
 const saveBtn = document.getElementById('saveBtn');
 
 // HTML editörü
@@ -207,6 +204,7 @@ const cssEditor = CodeMirror(document.getElementById('cssContainer'), {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
 }
 .text{
   font-size: 230px;
