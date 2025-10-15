@@ -148,7 +148,6 @@ footer{
 <body>
 <div class="ext">
     <div class="export">
-        <div id="logo">MyLogo</div>
     </div>
 
     <section class="code">
@@ -183,7 +182,7 @@ const saveBtn = document.getElementById('saveBtn');
 
 // HTML editörü
 const htmlEditor = CodeMirror(document.getElementById('htmlContainer'), {
-    value: '<span class="text">KESS</span>',
+    value: '<div id="logo"><span class="text">KESS</span></div>',
     lineNumbers: true,
     mode: "html",
     theme: "vscode",
