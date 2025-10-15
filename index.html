@@ -107,6 +107,9 @@ footer{
     padding: 10px;
     justify-content: space-between;
 }
+#logo{
+    position: absolute;
+}
 .title{
     padding: 0 0 0 20px;
 }
@@ -144,7 +147,8 @@ footer{
 </head>
 <body>
 <div class="ext">
-    <div class="export" id="exp">
+    <div class="export">
+        <div id="logo">MyLogo</div>
     </div>
 
     <section class="code">
@@ -174,12 +178,12 @@ footer{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-const exp = document.getElementById('exp');
+const logo = document.getElementById('logo');
 const saveBtn = document.getElementById('saveBtn');
 
 // HTML editörü
 const htmlEditor = CodeMirror(document.getElementById('htmlContainer'), {
-    value: '<div id="logo"><span class="text">KESS</span></div>',
+    value: '<span class="text">KESS</span>',
     lineNumbers: true,
     mode: "html",
     theme: "vscode",
@@ -204,7 +208,6 @@ const cssEditor = CodeMirror(document.getElementById('cssContainer'), {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
 }
 .text{
   font-size: 230px;
@@ -230,7 +233,7 @@ cssEditor.on("inputRead", function(cm, change) {
 
 
 function applyHTML() {
-    exp.innerHTML = htmlEditor.getValue();
+    logo.innerHTML = htmlEditor.getValue();
 }
 
 function applyCSS() {
