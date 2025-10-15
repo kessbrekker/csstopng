@@ -86,7 +86,7 @@ footer{
     align-items: center;
     gap: 50px;
 }
-.export {
+.exp {
     position: relative;
     background-color: white;
     height: 700px;
@@ -147,7 +147,7 @@ footer{
 </head>
 <body>
 <div class="ext">
-    <div class="export">
+    <div class="exp">
     </div>
 
     <section class="code">
@@ -177,7 +177,7 @@ footer{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-const logo = document.getElementById('logo');
+const logo = document.getElementById('exp');
 const saveBtn = document.getElementById('saveBtn');
 
 // HTML editörü
@@ -232,7 +232,7 @@ cssEditor.on("inputRead", function(cm, change) {
 
 
 function applyHTML() {
-    logo.innerHTML = htmlEditor.getValue();
+    exp.innerHTML = htmlEditor.getValue();
 }
 
 function applyCSS() {
