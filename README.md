@@ -1,101 +1,55 @@
-# csstopng 🎨 ➡️ 🖼️
+# Live Logo Editor 🎨
 
-**csstopng**, CSS kodlarınızı veya HTML bileşenlerinizi hızlı bir şekilde yüksek kaliteli PNG görsellerine dönüştüren, Node.js tabanlı güçlü bir araçtır. Kod parçacıklarını görselleştirmek, dinamik sosyal medya görselleri oluşturmak veya UI dökümantasyonu için idealdir.
+Bu proje, HTML ve CSS kullanarak tarayıcı üzerinden canlı olarak logo tasarlamanıza ve tasarladığınız logoyu tek tıkla **PNG** formatında indirmenize olanak tanıyan minimalist bir web aracıdır.
 
 ---
 
 ## ✨ Özellikler
 
-* **Hızlı Dönüşüm:** Saf CSS veya HTML+CSS yapısını saniyeler içinde görsele dönüştürür.
-* **Modern CSS Desteği:** Flexbox, Grid, Animasyonlar ve Gradient gibi modern özellikleri tam destekler.
-* **Headless Engine:** Arka planda Puppeteer kullanarak tarayıcı kalitesinde çıktılar üretir.
-* **Çift Kullanım:** Hem CLI (Terminal) üzerinden hem de projelerinizde bir kütüphane (API) olarak kullanılabilir.
+* **Canlı Önizleme:** HTML ve CSS editörlerinde yaptığınız değişiklikleri anında sol panelde görün.
+* **Gelişmiş Editör:** CodeMirror altyapısı sayesinde VS Code teması, sözdizimi vurgulama (syntax highlighting) ve otomatik tamamlama desteği.
+* **Akıllı Ölçekleme:** CSS içindeki `#logo` boyutlarına göre önizleme alanını otomatik olarak sığdıran dinamik transform yapısı.
+* **PNG Olarak Kaydet:** `html2canvas` kütüphanesi ile tasarladığınız alanı yüksek kaliteli bir görsel olarak indirme.
 
 ---
 
-## 🚀 Kurulum
+## 🚀 Başlangıç
 
-Projeyi yerelinizde kullanmak için aşağıdaki adımları sırasıyla izleyin:
+Proje herhangi bir sunucu veya kurulum gerektirmez. Sadece dosyayı klonlayıp tarayıcınızda açmanız yeterlidir.
 
-```bash
-# Depoyu klonlayın
-git clone [https://github.com/kessbrekker/csstopng.git](https://github.com/kessbrekker/csstopng.git)
+### Kullanım
 
-# Proje dizinine gidin
-cd csstopng
-
-# Bağımlılıkları yükleyin
-npm install
-```
-
----
-
-## 🛠️ Kullanım
-
-### 1. Terminal (CLI) Kullanımı
-Basit bir komutla CSS dosyanızı PNG'ye çevirin:
-```bash
-node index.js --input style.css --output result.png --width 800 --height 600
-```
-
-### 2. Modül Olarak Kullanım
-Kendi Node.js projelerinize entegre edin:
-```javascript
-const csstopng = require('./src/converter');
-
-const options = {
-    css: '.box { background: linear-gradient(45deg, #fe6b8b, #ff8e53); padding: 50px; border-radius: 10px; color: white; font-family: Arial; }',
-    html: '<div class="box"><h1>csstopng</h1><p>CSS to Image Converter</p></div>',
-    width: 600,
-    height: 400
-};
-
-csstopng.generate(options)
-    .then(path => console.log('Görsel oluşturuldu:', path))
-    .catch(err => console.error('Hata:', err));
-```
+1.  Depoyu klonlayın:
+    ```bash
+    git clone [https://github.com/kessbrekker/csstopng.git](https://github.com/kessbrekker/csstopng.git)
+    ```
+2.  `index.html` (veya ilgili dosya) dosyasını herhangi bir modern tarayıcıda açın.
+3.  **HTML** panelinden içeriği, **CSS** panelinden ise tasarımı düzenleyin.
+4.  **Save as PNG** butonuna basarak logonuzu indirin.
 
 ---
 
-## ⚙️ Yapılandırma
+## 🛠️ Teknik Detaylar
 
-| Parametre | Tip | Açıklama | Varsayılan |
-| :--- | :--- | :--- | :--- |
-| `input` | `String` | Kaynak CSS dosyasının yolu | `style.css` |
-| `output` | `String` | Oluşturulacak PNG adı | `output.png` |
-| `width` | `Number` | Görsel genişliği (piksel) | `1200` |
-| `height` | `Number` | Görsel yüksekliği (piksel) | `630` |
-| `transparent`| `Boolean`| Arka planın şeffaf olması | `false` |
+Bu araç aşağıdaki teknolojileri ve kütüphaneleri kullanmaktadır:
+
+* **CodeMirror 5.65.13:** Kod editörü ve sözdizimi vurgulama için.
+* **html2canvas 1.4.1:** HTML elementlerini canvas üzerinden görsele dönüştürmek için.
+* **VS Code Theme:** Editör görünümü için özelleştirilmiş CSS teması.
+* **Inter Font Family:** Modern ve temiz tipografi desteği.
 
 ---
 
 ## 📁 Proje Yapısı
 
-```text
-csstopng/
-├── src/                # Dönüştürücü çekirdek dosyaları
-├── examples/           # Kullanım örnekleri
-├── index.js            # CLI giriş noktası
-├── package.json        # Bağımlılıklar
-└── README.md           # Kılavuz
-```
+Proje, tüm mantığı (CSS, HTML, JS) tek bir dosya içerisinde barındıracak şekilde tasarlanmıştır:
 
----
-
-## 🤝 Katkıda Bulunma
-
-1. Projeyi fork edin.
-2. Yeni bir özellik dalı açın (`git checkout -b feature/yeniOzellik`).
-3. Değişikliklerinizi commit edin (`git commit -m 'Özellik eklendi'`).
-4. Dalınızı push edin (`git push origin feature/yeniOzellik`).
-5. Pull Request oluşturun.
+* **Styles:** Panel düzeni, karanlık mod arayüzü ve editör teması.
+* **Editor:** HTML ve CSS için iki ayrı `CodeMirror` instance'ı.
+* **Logic:** `applyHTML()` ve `applyCSS()` fonksiyonları ile anlık render alma ve `saveBtn` ile görsel çıktısı oluşturma.
 
 ---
 
 ## 📄 Lisans
 
-Bu proje [MIT](LICENSE) lisansı altında dökümante edilmiştir.
-
----
-
-**Geliştirici:** [@kessbrekker](https://github.com/kessbrekker)
+© 2025 [Kessbrekker](https://github.com/Kessbrekker). Tüm hakları saklıdır.
